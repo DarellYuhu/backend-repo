@@ -2,6 +2,9 @@ import admin from "firebase-admin";
 import { cert } from "firebase-admin/app";
 import { initializeApp } from "firebase/app";
 import { Config } from "./config";
+import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: Config.FIREBASE_API_KEY,
@@ -13,10 +16,20 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const webApp = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const adminApp = admin.initializeApp({
   credential: cert(Config.SERVICE_CRED_PATH),
 });
+
+const auth = getAuth();
+const firestore = getFirestore();
+const functions = getFunctions();
+
+// using emulator for localhost
+process.env.FIREBASE_AUTH_EMULATOR_HOST;
+connectAuthEmulator(auth, "http://127.0.0.1:9099");
+connectFirestoreEmulator(firestore, "http://127.0.0.1", 8080);
+connectFunctionsEmulator(functions, "127.0.0.1", 5001);
 
 const converter = <T>() => ({
   toFirestore: (data: T) => data,
@@ -24,4 +37,4 @@ const converter = <T>() => ({
     snap.data() as T,
 });
 
-export { webApp, adminApp, converter };
+export { auth, adminApp, converter };

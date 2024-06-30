@@ -1,12 +1,11 @@
 import app from "../core/app";
 import request from "supertest";
 import userCollections from "../repository/userCollection";
-import { adminApp, webApp } from "../config/firebaseConfig";
-import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { adminApp, auth } from "../config/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 let uid: string;
 let token: string;
-const auth = getAuth(webApp);
 
 beforeAll(async () => {
   try {
@@ -94,6 +93,19 @@ describe("Update user data", () => {
         const data = res.body;
         expect(res.status).toBe(200);
         expect(data.message).toBe("data update successfully");
+      });
+  });
+});
+
+describe("Fetch user data", () => {
+  it("should successfully fetch user data (200)", async () => {
+    return request(app)
+      .get(`/user/fetch-user-data/${uid}`)
+      .auth(token, { type: "bearer" })
+      .then((res) => {
+        const data = res.body;
+        expect(res.status).toBe(200);
+        expect(data.data).toHaveProperty("name");
       });
   });
 });

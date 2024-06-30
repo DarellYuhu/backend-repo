@@ -1,3 +1,4 @@
 .env
-node_modules
+**/node_modules
 interview-test-c9331-firebase-adminsdk-r4u05-259027f3e2.json
+dist

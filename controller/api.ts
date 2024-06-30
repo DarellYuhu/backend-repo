@@ -20,7 +20,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
 const getUserData = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const { data } = await userCollections.doc(id).get();
+    const data = (await userCollections.doc(id).get()).data();
     res.json({ status: "success", message: "data fetched successfully", data });
     return data;
   } catch (error) {

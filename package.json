@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
-    "dev": "nodemon server.ts"
+    "dev": "nodemon server.ts",
+    "build": "tsc",
+    "start": "npm run build && firebase emulators:start --only functions"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +29,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "firebase": "^10.12.2",
-    "firebase-admin": "^12.2.0"
+    "firebase-admin": "^12.2.0",
+    "firebase-functions": "^5.0.1"
   }
 }
